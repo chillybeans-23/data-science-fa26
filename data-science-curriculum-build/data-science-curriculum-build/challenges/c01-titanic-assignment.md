@@ -1,7 +1,7 @@
 RMS Titanic
 ================
-(Your name here)
-2020-
+Arianne Fong
+2026-09-10
 
 - [Grading Rubric](#grading-rubric)
   - [Individual](#individual)
