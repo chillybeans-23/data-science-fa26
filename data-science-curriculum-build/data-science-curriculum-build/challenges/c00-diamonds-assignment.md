@@ -102,14 +102,15 @@ document your observations.
 ``` r
 ## TASK: Plot `price` vs `carat` below
 ## Your code here!
+
 diamonds %>%
-  ggplot() +
-  geom_point(
+  ggplot(
     mapping = aes(
       y = price,
       x = carat
     )
-  )
+  ) + 
+  geom_point()
 ```
 
 ![](c00-diamonds-assignment_files/figure-gfm/q1-task-1.png)<!-- -->
@@ -125,14 +126,12 @@ diamonds %>%
 ## TASK: Plot `price`, `carat`, and `cut` below
 ## Your code here!
 diamonds %>%
-  ggplot() +
-  geom_point(
-    mapping = aes(
-      y = price,
-      x = carat,
-      colour = cut
-    )
-  )
+  ggplot(mapping = aes(
+    y = price,
+    x = carat,
+    colour = cut)
+    ) +
+  geom_point()
 ```
 
 ![](c00-diamonds-assignment_files/figure-gfm/q2-task-1.png)<!-- -->
