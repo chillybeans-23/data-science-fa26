@@ -10,17 +10,20 @@ output:
 *Purpose*: Confidence and prediction intervals are useful for studying "pure sampling" of some distribution. However, we can combine CI and PI with regression analysis to equip our modeling efforts with powerful notions of uncertainty. In this challenge, you will use fluid simulation data in a regression analysis with uncertainty quantification (CI and PI) to support engineering design.
 
 <!-- include-rubric -->
+
 # Grading Rubric
+
 <!-- -------------------------------------------------- -->
 
 Unlike exercises, **challenges will be graded**. The following rubrics define how you will be graded, both on an individual and team basis.
 
 ## Individual
+
 <!-- ------------------------- -->
 
 | Category | Needs Improvement | Satisfactory |
-|----------|----------------|--------------|
-| Effort | Some task __q__'s left unattempted | All task __q__'s attempted |
+|------------------|-----------------------------|-------------------------|
+| Effort | Some task **q**'s left unattempted | All task **q**'s attempted |
 | Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
 | Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
 | Assessed | Observations include claims not supported by the data, or reflect a level of certainty not warranted by the data | Observations are appropriately qualified by the quality & relevance of the data and (in)conclusiveness of the support |
@@ -28,15 +31,16 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 | Code Styled | Violations of the [style guide](https://style.tidyverse.org/) hinder readability | Code sufficiently close to the [style guide](https://style.tidyverse.org/) |
 
 ## Submission
+
 <!-- ------------------------- -->
 
 Make sure to commit both the challenge report (`report.md` file) and supporting files (`report_files/` folder) when you are done! Then submit a link to Canvas. **Your Challenge submission is not complete without all files uploaded to GitHub.**
-
 
 ```{r setup}
 library(tidyverse)
 library(modelr)
 library(broom)
+knitr::opts_chunk$set(error = TRUE)
 
 ## Helper function to compute uncertainty bounds
 add_uncertainties <- function(data, model, prefix = "pred", ...) {
@@ -65,10 +69,9 @@ unzip(filename_zip, exdir = "./data")
 df_psaap <- read_csv(filename_psaap)
 ```
 
-![PSAAP II irradiated core flow](./images/psaap-setup.png)
-Figure 1. An example simulation, frozen at a specific point in time. An initial simulation is run (HIT SECTION) to generate a turbulent flow with particles, and that swirling flow is released into a rectangular domain (RADIATED SECTION) with bulk downstream flow (left to right). Concentrated solar radiation transmits through the optically transparent fluid, but deposits heat into the particles. The particles then convect heat into the fluid, which heats up the flow. The false-color image shows the fluid temperature: Notice that there are "hot spots" where hot particles have deposited heat into the fluid. The dataset `df_psaap` gives measurements of `T_norm = (T - T0) / T0` averaged across planes at various locations along the RADIATED SECTION.
+![PSAAP II irradiated core flow](./images/psaap-setup.png) Figure 1. An example simulation, frozen at a specific point in time. An initial simulation is run (HIT SECTION) to generate a turbulent flow with particles, and that swirling flow is released into a rectangular domain (RADIATED SECTION) with bulk downstream flow (left to right). Concentrated solar radiation transmits through the optically transparent fluid, but deposits heat into the particles. The particles then convect heat into the fluid, which heats up the flow. The false-color image shows the fluid temperature: Notice that there are "hot spots" where hot particles have deposited heat into the fluid. The dataset `df_psaap` gives measurements of `T_norm = (T - T0) / T0` averaged across planes at various locations along the RADIATED SECTION.
 
-### __q1__ Perform your "initial checks" to get a sense of the data.
+### **q1** Perform your "initial checks" to get a sense of the data.
 
 ```{r q1-task}
 ## TODO: Perform your initial checks
@@ -107,7 +110,7 @@ The important variables in this dataset are:
 
 The primary output of interest is `T_norm = (avg_T - T_f) / T_f`, the normalized (dimensionless) temperature rise of the fluid, due to heat transfer. These measurements are taken at locations `x` along a column of fluid, for different experimental settings (e.g. different dimensions `W, L`, different flow speeds `U_0`, etc.).
 
-### __q2__ Visualize `T_norm` against `x`. Note that there are multiple simulations at different values of the Input variables: Each simulation result is identified by a different value of `idx`.
+### **q2** Visualize `T_norm` against `x`. Note that there are multiple simulations at different values of the Input variables: Each simulation result is identified by a different value of `idx`.
 
 ```{r q2-task}
 ## TODO: Visualize the data in df_psaap with T_norm against x;
@@ -131,7 +134,7 @@ One of the key decisions we must make in modeling is choosing predictors (featur
 
 Reasoning about our variables---at least at a *high level*---can help us to avoid including *fallacious* predictors in our models. You'll explore this idea in the next task.
 
-### __q3__ The following code chunk fits a few different models. Compute a measure of model accuracy for each model on `df_validate`, and compare their performance.
+### **q3** The following code chunk fits a few different models. Compute a measure of model accuracy for each model on `df_validate`, and compare their performance.
 
 ```{r q3-task}
 ## NOTE: No need to edit these models
@@ -162,7 +165,7 @@ fit_nonphysical <-
 - What *Category* of variable is `idx`? Does it have any physical meaning?
   - (Your response here)
 
-### __q4__ Interpret this model
+### **q4** Interpret this model
 
 Interpret the following model by answering the questions below.
 
@@ -184,7 +187,7 @@ fit_q4 <-
   - (Your response here)
 - What is the regression coefficient for `x`? What about the regression coefficient for `T_f`?
   - (Your response here)
-- What is the standard deviation of `x` in `df_psaap`? What about the standard deviation of `T_f`? 
+- What is the standard deviation of `x` in `df_psaap`? What about the standard deviation of `T_f`?
   - (Your response here)
 - How do these standard deviations relate to the regression coefficients for `x` and `T_f`?
   - (Your response here)
@@ -257,7 +260,7 @@ Both CI and PI are a quantification of the uncertainty in our model, but the two
 
 Since CI and PI are a quantification of uncertainty, they should tend to *narrow* as our model becomes more confident in its predictions. Building a more accurate model will often lead to a reduction in uncertainty. We'll see this phenomenon in action with the following task:
 
-### __q5__ The following code will construct a predicted-vs-actual plot with your model from *q4* and add prediction intervals. Study the results and answer the questions below under *observations*.
+### **q5** The following code will construct a predicted-vs-actual plot with your model from *q4* and add prediction intervals. Study the results and answer the questions below under *observations*.
 
 ```{r q5-task}
 ## TODO: Run this code and interpret the results
@@ -309,7 +312,7 @@ In both cases---human behavior and variable material properties---we would be be
 
 # Case Study: Predicting Performance Ranges
 
-### __q6__ You are consulting with a team that is designing a prototype heat transfer device. They are asking you to help determine a *dependable range of values* for `T_norm` they can design around for this *single prototype*. The realized value of `T_norm` must not be too high as it may damage the downstream equipment, but it must also be high enough to extract an acceptable amount of heat.
+### **q6** You are consulting with a team that is designing a prototype heat transfer device. They are asking you to help determine a *dependable range of values* for `T_norm` they can design around for this *single prototype*. The realized value of `T_norm` must not be too high as it may damage the downstream equipment, but it must also be high enough to extract an acceptable amount of heat.
 
 In order to maximize the conditions under which this device can operate successfully, the design team has chosen to fix the variables listed in the table below, and consider the other variables to fluctuate according to the values observed in `df_psaap`.
 
@@ -357,4 +360,4 @@ fit_q6 <- NA
 
 # References
 
-- [1] Jofre, del Rosario, and Iaccarino "Data-driven dimensional analysis of heat transfer in irradiated particle-laden turbulent flow" (2020) *International Journal of Multiphase Flow*, https://doi.org/10.1016/j.ijmultiphaseflow.2019.103198
+- [1] Jofre, del Rosario, and Iaccarino "Data-driven dimensional analysis of heat transfer in irradiated particle-laden turbulent flow" (2020) *International Journal of Multiphase Flow*, <https://doi.org/10.1016/j.ijmultiphaseflow.2019.103198>
